@@ -9,14 +9,26 @@ fn main() {
     input.lines().for_each(|line| {
         if let Some(moves) = line.strip_prefix("L") {
             let number = moves.parse::<i32>().unwrap();
-            dial = (dial - number) % 100;
-        } else  if let Some(moves) = line.strip_prefix("R") {
-            let number = moves.parse::<i32>().unwrap();
-            dial = (dial + number) % 100;
-        }
 
-        if (dial == 0) {
-            zero_count += 1;
+            for i in 1..=number {
+                let pos = (dial - i).rem_euclid(100);
+                if pos == 0 {
+                    zero_count += 1;
+                }
+            }
+
+            dial = (dial - number).rem_euclid(100);
+        } else if let Some(moves) = line.strip_prefix("R") {
+            let number = moves.parse::<i32>().unwrap();
+
+            for i in 1..=number {
+                let pos = (dial + i).rem_euclid(100);
+                if pos == 0 {
+                    zero_count += 1;
+                }
+            }
+
+            dial = (dial + number).rem_euclid(100);
         }
     });
 
